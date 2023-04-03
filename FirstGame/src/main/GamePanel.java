@@ -1,6 +1,9 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Graphics;
+//import java.awt.Toolkit;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -15,14 +18,19 @@ public class GamePanel extends JPanel{
 	//Control rectangle position
 	private float xDelta = 100, yDelta = 100;
 	
-	private float xDir = 0.06f, yDir = 0.06f;
+	private float xDir = 0.1f, yDir = 0.1f;
 	
 	//Fps counter
 	private int frames = 0;
 	private long lastCheck = 0;
 	
+	//Color for chameleon rect
+	private Color color = new Color(10, 255, 25);
+	
+	private Random random;
+	
 	public GamePanel() {
-		
+		random = new Random();
 		mouseInputs = new MouseInputs(this);
 		
 		addKeyListener(new KeyboardInputs(this));
@@ -53,6 +61,7 @@ public class GamePanel extends JPanel{
 		super.paintComponent(g);
 		
 		updateRectangle();
+		g.setColor(color);
 		
 		g.fillRect((int)xDelta, (int)yDelta, 200, 50);
 		
@@ -65,6 +74,7 @@ public class GamePanel extends JPanel{
 		}
 		
 		repaint();
+		//Toolkit.getDefaultToolkit().sync();
 		
 	}
 	
@@ -74,14 +84,26 @@ public class GamePanel extends JPanel{
 		xDelta+= xDir;
 		
 		//Reverse dir if hits edge
-		if(xDelta > 400 || xDelta < 0) {
-			xDir*=-1;
+		if(xDelta >= 400 || xDelta < 0) {
+			xDir *=-1;
+			color = getRndColor();
 		}
 		
+		
 		yDelta += yDir;
-		if(yDelta > 400 || yDelta < 0) {
+		if(yDelta >= 400 || yDelta < 0) {
 			yDir *= -1;
+			color = getRndColor();
 		}
+		
+	}
+	
+	private Color getRndColor() {
+		int r = random.nextInt(256);
+		int b = random.nextInt(256);
+		int g = random.nextInt(256);
+		
+		return new Color(r, g, b);
 		
 	}
 
