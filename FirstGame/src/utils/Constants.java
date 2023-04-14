@@ -2,6 +2,13 @@ package utils;
 
 public class Constants {
 	
+	public static class Dimensions {
+		public static final int SPRITE_WIDTH = 64;
+		public static final int SPRITE_HEIGHT = 40;
+		public static final int SPRITE_GRID_WIDTH = 6;
+		public static final int SPRITE_GRID_HEIGHT = 9;
+	}
+	
 	public static class Directions {
 		public static final int LEFT = 0;
 		public static final int UP = 1;
