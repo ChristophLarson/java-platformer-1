@@ -18,16 +18,15 @@ import utils.LoadSave;
 public class Player extends Entity {
 
 	private BufferedImage[][] animations;
-	private int aniTick, aniIndex, aniSpeed = 120 / 8; // fps / animations per second
+
+	private int aniTick, aniIndex, aniSpeed = 120 / 8;
 	private int playerAction = IDLE;
-	private int playerDirection = -1; // Not moving
-	private boolean moving = false;
-	private boolean attacking = false;
+	private boolean moving, attacking = false;
 	private boolean left, up, right, down;
 	private float playerSpeed = 2.0f;
 
-	public Player(float x, float y) {
-		super(x, y);
+	public Player(float x, float y, int width, int height) {
+		super(x, y, width, height);
 		loadAnimations();
 
 	}
@@ -40,7 +39,8 @@ public class Player extends Entity {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, SPRITE_WIDTH * 4, SPRITE_HEIGHT * 4, null);
+		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width,
+				height, null);
 	}
 
 	private void updateAnimationTick() {
@@ -104,12 +104,15 @@ public class Player extends Entity {
 	}
 
 	private void loadAnimations() {
-		BufferedImage img = LoadSave.GetPlayerAtlas();
 
-		animations = new BufferedImage[SPRITE_GRID_HEIGHT][SPRITE_GRID_WIDTH]; // Size of sprite grid
+		BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
+
+		// Size of sprite grid
+		animations = new BufferedImage[SPRITE_GRID_HEIGHT][SPRITE_GRID_WIDTH];
 		for (int j = 0; j < animations.length; j++) {
 			for (int i = 0; i < animations[j].length; i++) {
-				animations[j][i] = img.getSubimage(i * SPRITE_WIDTH, j * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
+				animations[j][i] = img.getSubimage(i * SPRITE_WIDTH,
+						j * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
 			}
 		}
 	}

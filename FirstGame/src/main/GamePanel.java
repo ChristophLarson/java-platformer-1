@@ -1,31 +1,26 @@
 package main;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
 
-import javax.imageio.ImageIO;
-//import java.awt.Toolkit;
-import javax.swing.JPanel;
 import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
-import static utils.Constants.PlayerConstants.*;
-import static utils.Constants.Directions.*;
-import static utils.Constants.Dimensions.*;
+public class GamePanel extends JPanel {
 
-public class GamePanel extends JPanel{
-	
-	//Mult. mouse listeners, so one MouseInput declared here
+	// Mult. mouse listeners, so one MouseInput declared here
 	private MouseInputs mouseInputs;
 	private Game game;
-	
+
 	public GamePanel(Game game) {
 		mouseInputs = new MouseInputs(this);
 		this.game = game;
-		
+
 		setPanelSize();
 		addKeyListener(new KeyboardInputs(this));
 		addMouseListener(mouseInputs);
@@ -33,26 +28,24 @@ public class GamePanel extends JPanel{
 	}
 
 	private void setPanelSize() {
-		Dimension size = new Dimension(1280, 800);
+		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
 		setPreferredSize(size);
+		System.out.println("size: " + GAME_WIDTH + " : " + GAME_HEIGHT);
 	}
-	
-	
+
 	public void updateGame() {
 
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+
 		game.render(g);
-		
+
 	}
-	
+
 	public Game getGame() {
 		return game;
 	}
-
-	
 
 }
