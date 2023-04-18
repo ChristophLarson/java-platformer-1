@@ -1,11 +1,12 @@
 package entities;
 
-//import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 public abstract class Entity {
 
 	protected float x, y;
 	protected int width, height;
+	protected Rectangle hitbox;
 
 	protected Entity(float x, float y, int width, int height) {
 		this.x = x;
