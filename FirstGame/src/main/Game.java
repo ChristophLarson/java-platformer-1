@@ -36,9 +36,10 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() {
+		levelManager = new LevelManager(this);
 		player = new Player(200, 200, (int) (SPRITE_WIDTH * SCALE),
 				(int) (SPRITE_HEIGHT * SCALE));
-		levelManager = new LevelManager(this);
+		player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
 
 	}
 

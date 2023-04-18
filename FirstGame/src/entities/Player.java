@@ -9,6 +9,7 @@ import static utils.Constants.PlayerConstants.ATTACK_1;
 import static utils.Constants.PlayerConstants.IDLE;
 import static utils.Constants.PlayerConstants.RUNNING;
 import static utils.Constants.PlayerConstants.getSpriteAmount;
+import static utils.HelpMethods.canMoveHere;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,7 @@ public class Player extends Entity {
 	private boolean moving, attacking = false;
 	private boolean left, up, right, down;
 	private float playerSpeed = 2.0f;
+	private int[][] lvlData;
 
 	public Player(float x, float y, int width, int height) {
 		super(x, y, width, height);
@@ -33,6 +35,7 @@ public class Player extends Entity {
 
 	public void update() {
 		updatePos();
+		updateHitbox();
 		updateAnimationTick();
 		setAnimation();
 
@@ -41,6 +44,7 @@ public class Player extends Entity {
 	public void render(Graphics g) {
 		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width,
 				height, null);
+		drawHitbox(g);
 	}
 
 	private void updateAnimationTick() {
@@ -84,20 +88,25 @@ public class Player extends Entity {
 	private void updatePos() {
 
 		moving = false;
+		if (!left && !right && !up && !down)
+			return;
+		float xSpeed = 0, ySpeed = 0;
 
 		if (left && !right) {
-			x -= playerSpeed;
-			moving = true;
+			xSpeed = -playerSpeed;
 		} else if (right && !left) {
-			x += playerSpeed;
-			moving = true;
+			xSpeed = playerSpeed;
 		}
 
 		if (up && !down) {
-			y -= playerSpeed;
-			moving = true;
+			ySpeed = -playerSpeed;
 		} else if (down && !up) {
-			y += playerSpeed;
+			ySpeed = playerSpeed;
+		}
+
+		if (canMoveHere(x + xSpeed, y + ySpeed, width, height, lvlData)) {
+			this.x += xSpeed;
+			this.y += ySpeed;
 			moving = true;
 		}
 
@@ -115,6 +124,10 @@ public class Player extends Entity {
 						j * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
 			}
 		}
+	}
+
+	public void loadLevelData(int[][] lvlData) {
+		this.lvlData = lvlData;
 	}
 
 	public void resetDirBooleans() {
